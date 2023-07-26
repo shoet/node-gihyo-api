@@ -1,0 +1,38 @@
+{
+  "name": "gihyo-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc --build --verbose"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "backend",
+    "database"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.4.4",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "prisma": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0"
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./backend"
+    },
+    {
+      "path": "./database"
+    }
+  ]
+}
