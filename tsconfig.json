@@ -7,7 +7,7 @@
       "path": "./database"
     },
     {
-      "path": "./backend"
+      "path": "./api"
     }
   ]
 }

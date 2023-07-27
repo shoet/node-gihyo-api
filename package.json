@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "backend",
+    "api",
     "database"
   ],
   "devDependencies": {
@@ -30,7 +30,7 @@
   "files": [],
   "references": [
     {
-      "path": "./backend"
+      "path": "./api"
     },
     {
       "path": "./database"
