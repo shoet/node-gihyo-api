@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient, User } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -34,9 +34,6 @@ const DEFAULT_PRODUCTS = [
     imageUrl: 'xxx.jpeg',
     price: 2000,
     condition: 'used',
-    owner: {
-      connect: { id: 1 },
-    } as Prisma.UserCreateNestedOneWithoutProductInput,
   },
   {
     title: 'Product2',
@@ -45,9 +42,6 @@ const DEFAULT_PRODUCTS = [
     imageUrl: 'xxx.jpeg',
     price: 5000,
     condition: 'new',
-    owner: {
-      connect: { id: 3 },
-    } as Prisma.UserCreateNestedOneWithoutProductInput,
   },
 ] as Array<Prisma.ProductCreateInput>
 
@@ -56,18 +50,21 @@ const usersTransaction = async () => {
   return await prisma.$transaction(transaction)
 }
 
-const productsTransaction = async () => {
-  const transaction = DEFAULT_PRODUCTS.map((p) =>
-    prisma.product.create({ data: p }),
-  )
+const productsTransaction = async (users: User[]) => {
+  const transaction = DEFAULT_PRODUCTS.map((p, idx) => {
+    p.owner = { connect: { id: users[idx].id } }
+    return prisma.product.create({ data: p as Prisma.ProductCreateInput })
+  })
   return await prisma.$transaction(transaction)
 }
 
 const main = async () => {
   console.log('Start seeding')
 
-  await usersTransaction()
-  await productsTransaction()
+  const users = await usersTransaction()
+  console.log(JSON.stringify(users))
+  const products = await productsTransaction(users)
+  console.log(JSON.stringify(products))
 
   console.log('Complete seeding')
 }
