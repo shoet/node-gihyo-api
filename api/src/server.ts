@@ -14,6 +14,7 @@ import { getEnvConfig } from './utils/config'
 import * as http from 'http'
 
 import * as dotenv from 'dotenv'
+import { getProductListHandler, getProductHandler } from './handlers/product'
 
 dotenv.config()
 
@@ -34,6 +35,8 @@ app.use(logRequestMiddleware)
 
 // Route Handlers --------------------------------------------------
 app.get('/users/:id', tryWrapAPI(getUserHandler))
+app.get('/products/:id', tryWrapAPI(getProductHandler))
+app.get('/products', tryWrapAPI(getProductListHandler))
 
 // Error Middlewares ----------------------------------------------------
 app.use(notfoundErrorMiddleware)
