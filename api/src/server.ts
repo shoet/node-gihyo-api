@@ -1,7 +1,8 @@
 import express from 'express'
-import bodyParser from 'body-parser'
+import * as http from 'http'
+import * as dotenv from 'dotenv'
+import { morgan } from './lib/morgan'
 
-import { logRequestMiddleware } from './handlers/logger'
 import {
   internalErrorMiddleware,
   notfoundErrorMiddleware,
@@ -11,9 +12,6 @@ import {
 import { getUserHandler } from './handlers/user'
 
 import { getEnvConfig } from './utils/config'
-import * as http from 'http'
-
-import * as dotenv from 'dotenv'
 import { getProductListHandler, getProductHandler } from './handlers/product'
 
 dotenv.config()
@@ -27,7 +25,8 @@ const server = http.createServer(app)
 // Utility Middlewares ---------------------------------------------
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(logRequestMiddleware)
+app.use(morgan)
+
 
 // Route Handlers --------------------------------------------------
 app.get('/users/:id', tryWrapAPI(getUserHandler))
