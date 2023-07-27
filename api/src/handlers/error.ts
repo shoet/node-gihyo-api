@@ -23,10 +23,8 @@ export const internalErrorMiddleware = (
 ) => {
   if (err instanceof SyntaxError) {
     // JSON syntax invalid
+    console.log('[SyntaxError]', req)
     return res.status(400).send(err.message)
-  }
-  if (err instanceof ApiError) {
-    return res.status(err.status).send(err.message)
   }
   if (err instanceof BadRequest) {
     console.log('[BadRequest]', req)
@@ -36,7 +34,6 @@ export const internalErrorMiddleware = (
     console.log('[NotFound]', req)
     return res.status(err.status).send(err.message)
   }
-  console.log(err)
   return res.status(500).send('Internal Server Error')
 }
 /* eslint-enable */
@@ -50,9 +47,9 @@ export const tryWrapAPI = (
     try {
       handler(req, ...rest)
         .then((data: any) => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(data)
-          }
+          // if (process.env.NODE_ENV === 'development') {
+          //   console.log(data)
+          // }
           res.status(200).json(data)
         })
         .catch((err) => next(err))

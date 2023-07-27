@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import { getProduct, getProductRange } from '../models/product'
-import { ApiError, BadRequest } from '../types/error'
+import { NotFound, BadRequest } from '../types/error'
 
 export const getProductHandler = async (req: Request) => {
   if (!req.params.id) {
@@ -8,11 +8,11 @@ export const getProductHandler = async (req: Request) => {
   }
   const productId = Number(req.params.id)
   if (isNaN(productId)) {
-    throw new ApiError('product is not found', 400)
+    throw new NotFound('product is not found')
   }
   const product = await getProduct(productId)
   if (product === null) {
-    throw new ApiError('product is not found', 400)
+    throw new NotFound('product is not found')
   }
   return product
 }

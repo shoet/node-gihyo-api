@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import { getUser, getAllUsers } from '../models/user'
-import { ApiError, BadRequest } from '../types/error'
+import { BadRequest, NotFound } from '../types/error'
 
 export const getUserHandler = async (req: Request) => {
   if (!req.params.id) {
@@ -8,11 +8,11 @@ export const getUserHandler = async (req: Request) => {
   }
   const userId = Number(req.params.id)
   if (isNaN(userId)) {
-    throw new ApiError('user is not found', 400)
+    throw new NotFound('user is not found')
   }
   const user = await getUser(userId)
   if (user === null) {
-    throw new ApiError('user is not found', 400)
+    throw new NotFound('user is not found')
   }
   return user
 }
