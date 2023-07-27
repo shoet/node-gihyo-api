@@ -21,6 +21,10 @@ export const internalErrorMiddleware = (
   res: Response,
   _next: NextFunction,
 ) => {
+  if (err instanceof SyntaxError) {
+    // JSON syntax invalid
+    return res.status(400).send(err.message)
+  }
   if (err instanceof ApiError) {
     return res.status(err.status).send(err.message)
   }

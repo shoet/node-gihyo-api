@@ -25,12 +25,8 @@ const app = express()
 const server = http.createServer(app)
 
 // Utility Middlewares ---------------------------------------------
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-)
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(logRequestMiddleware)
 
 // Route Handlers --------------------------------------------------
@@ -43,9 +39,14 @@ app.use(notfoundErrorMiddleware)
 app.use(internalErrorMiddleware)
 
 // Server Settings -----------------------------------------------------
-app.listen(envConfig.app.port, () =>
-  console.log(`listen start port ${envConfig.app.port}`),
-)
+app
+  .listen(envConfig.app.port, () =>
+    console.log(`Start listening port ${envConfig.app.port}`),
+  )
+  .on('error', (err) => {
+    console.error(err)
+    process.exit()
+  })
 
 const timeout = 30 * 1000
 process.on('SIGTERM', () => {
