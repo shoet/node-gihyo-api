@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
 export const getUser = async (options: {
@@ -7,7 +7,7 @@ export const getUser = async (options: {
   email?: string
   displayName?: string
 }) => {
-  const user = prisma.user.findFirst({
+  const user = await prisma.user.findFirst({
     where: {
       id: options.id,
       name: options.name,
