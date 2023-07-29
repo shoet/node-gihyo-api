@@ -35,6 +35,7 @@ app.use(cookieParser())
 // app.use(session()) // express-session
 
 // Route Handler --------------------------------------------------
+app.get('/users/me', AuthGuard, tryWrapAPI(getUserMeHandler))
 app.get('/users/:id', AuthGuard, tryWrapAPI(getUserHandler))
 app.get('/products/:id', AuthGuard, tryWrapAPI(getProductHandler))
 app.get('/products', AuthGuard, tryWrapAPI(getProductListHandler))
