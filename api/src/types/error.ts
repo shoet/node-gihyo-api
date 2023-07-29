@@ -32,3 +32,25 @@ export class NotFound extends Error {
     this.message = message
   }
 }
+
+export class Unauthorized extends Error {
+  status: number
+  message: string
+
+  constructor(message: string) {
+    super('Unauthorized')
+    this.status = 401
+    this.message = message
+  }
+}
+
+export class Conflict extends Error {
+  status: number
+  message: string
+
+  constructor(message: string) {
+    super('Conflict')
+    this.status = 409
+    this.message = message
+  }
+}

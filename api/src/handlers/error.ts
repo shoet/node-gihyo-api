@@ -1,5 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { ApiError, BadRequest, NotFound } from '../types/error'
+import {
+  ApiError,
+  BadRequest,
+  Conflict,
+  NotFound,
+  Unauthorized,
+} from '../types/error'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export const notfoundErrorMiddleware = (
@@ -26,6 +32,16 @@ export const internalErrorMiddleware = (
     console.log('[SyntaxError]', req)
     return res.status(400).send(err.message)
   }
+  if (err instanceof Conflict) {
+    console.log('[Conflict]', req)
+    console.log(err.message)
+    return res.status(err.status).send(err.message)
+  }
+  if (err instanceof Unauthorized) {
+    console.log('[Unauthorized]', req)
+    console.log(err.message)
+    return res.status(err.status).send(err.message)
+  }
   if (err instanceof BadRequest) {
     console.log('[BadRequest]', req)
     return res.status(err.status).send(err.message)
@@ -34,6 +50,7 @@ export const internalErrorMiddleware = (
     console.log('[NotFound]', req)
     return res.status(err.status).send(err.message)
   }
+  console.log(err)
   return res.status(500).send('Internal Server Error')
 }
 /* eslint-enable */

@@ -5,6 +5,7 @@ const prisma = new PrismaClient()
 const DEFAULT_USERS = [
   {
     name: 'John',
+    password: '$2b$10$CkeSJwha/4NZdda96TZ3GeqV.hvUUc20ankQdvZOT2HDtzVQYT2F', // user_1
     displayName: 'John',
     email: 'John@example.com',
     description: 'John',
@@ -12,6 +13,7 @@ const DEFAULT_USERS = [
   },
   {
     name: 'Mika',
+    password: '$2b$10$KF6USj/38nrmdvuSyidb1ewBpQFFVitlg1561Z0xDz2XvPH10GZA', // user_2
     displayName: 'Mika',
     email: 'Mika@example.com',
     description: 'Mika',
@@ -19,6 +21,7 @@ const DEFAULT_USERS = [
   },
   {
     name: 'Jake',
+    password: '$2b$10$uT3NRpFNYeK3L9jw81MpveF4gG/U6yyOJlbVGBLioadWljeaU3R0', // user_3
     displayName: 'Jake',
     email: 'Jake@example.com',
     description: 'Jake',
