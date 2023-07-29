@@ -15,7 +15,7 @@ export const authLogin = async (
   if (!compare(password, user.password)) {
     throw new Unauthorized('Incorrect password')
   }
-  const { password, ...userWithoutPassword } = user
+  const { password: _, ...userWithoutPassword } = user
   return userWithoutPassword
 }
 
