@@ -1,5 +1,5 @@
 export type ApiResponse = {
-  data: any
+  data: any // eslint-disable-line @typescript-eslint/no-explicit-any
   status: number
 }
 

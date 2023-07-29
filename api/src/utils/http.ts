@@ -1,6 +1,6 @@
 import { Response } from 'express'
-import { AuthedUser } from '../services/auth'
 import * as jwt from 'jsonwebtoken'
+import { AuthedUser } from '../services/auth'
 import { Unauthorized } from '../types/error'
 
 export function generateToken(user: AuthedUser): string {

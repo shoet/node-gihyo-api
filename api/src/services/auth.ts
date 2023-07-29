@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Prisma, User } from '@prisma/client'
+import { hashPass, compare } from '../lib/bcrypt'
 import { addUser, getUser } from '../models/user'
 import { Conflict, Unauthorized } from '../types/error'
-import { hashPass, compare } from '../lib/bcrypt'
 
 export type AuthedUser = Omit<User, 'password'>
 

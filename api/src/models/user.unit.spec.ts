@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import { getAllUsers, getUser } from './user'
 
 jest.mock('../lib/prisma', () => {
