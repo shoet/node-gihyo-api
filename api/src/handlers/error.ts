@@ -1,24 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import {
-  ApiError,
-  BadRequest,
-  Conflict,
-  NotFound,
-  Unauthorized,
-} from '../types/error'
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-export const notfoundErrorMiddleware = (
-  req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
-  console.log('Not Found')
-  console.log(req.headers)
-  console.log(req.path)
-  return res.status(404).send('Not Found')
-}
-/* eslint-enable */
+import { BadRequest, Conflict, NotFound, Unauthorized } from '../types/error'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 export const internalErrorMiddleware = (

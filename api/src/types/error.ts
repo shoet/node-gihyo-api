@@ -1,14 +1,5 @@
 import { Request } from 'express'
 
-export class ApiError extends Error {
-  status: number
-
-  constructor(message: string, status: number) {
-    super(message)
-    this.status = status
-  }
-}
-
 export class BadRequest extends Error {
   status: number
   req: Request

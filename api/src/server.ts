@@ -3,11 +3,7 @@ import * as http from 'http'
 import * as dotenv from 'dotenv'
 import { morgan } from './lib/morgan'
 
-import {
-  internalErrorMiddleware,
-  notfoundErrorMiddleware,
-  tryWrapAPI,
-} from './handlers/error'
+import { internalErrorMiddleware, tryWrapAPI } from './handlers/error'
 
 import { getUserHandler } from './handlers/user'
 
@@ -23,24 +19,31 @@ const envConfig = getEnvConfig(process.env.NODE_ENV)
 const app = express()
 const server = http.createServer(app)
 
-// Utility Middlewares ---------------------------------------------
+// Utility Middleware ---------------------------------------------
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(morgan)
 
+// app.use(cors())
+// app.use(helmet())
+// app.use(cookieParser())
+// app.use(session()) // express-session
 
-// Route Handlers --------------------------------------------------
+// Route Handler --------------------------------------------------
 app.get('/users/:id', tryWrapAPI(getUserHandler))
 app.get('/products/:id', tryWrapAPI(getProductHandler))
 app.get('/products', tryWrapAPI(getProductListHandler))
 
 app.post('/auth/signup', tryWrapAPI(signUpHandler))
 app.post('/auth/signin', tryWrapAPI(signInHandler))
-// Error Middlewares ----------------------------------------------------
-app.use(notfoundErrorMiddleware)
+app.post('/auth/signout')
+app.post('/purchase')
+app.post('/users/me')
+
+// Error Middleware ----------------------------------------------------
 app.use(internalErrorMiddleware)
 
-// Server Settings -----------------------------------------------------
+// Server Setting -----------------------------------------------------
 app
   .listen(envConfig.app.port, () =>
     console.log(`Start listening port ${envConfig.app.port}`),
