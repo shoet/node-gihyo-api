@@ -24,7 +24,7 @@ export const signUpHandler = async (
     profileImageUrl: body.profileImageUrl,
   }
   const user = await authSignUp(props)
-  setCookieToken(res, user)
+  setCookieToken(res, user, 'token')
   return { data: user, status: 201 }
 }
 
@@ -36,6 +36,6 @@ export const signInHandler = async (
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)
   const user = await authLogin(body.email, body.password)
-  setCookieToken(res, user)
+  setCookieToken(res, user, 'token')
   return { data: user, status: 200 }
 }

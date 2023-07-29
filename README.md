@@ -5,8 +5,7 @@
 
 # TODO
 
-- セッション
-  - 実装
+- パスワード除去箇所
 - デプロイ
   - cloudrun
   - litestream

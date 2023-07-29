@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { BadRequest, Conflict, NotFound, Unauthorized } from '../types/error'
 import { ApiResponse } from '../types/api'
+import { verifyToken } from '../utils/http'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 export const internalErrorMiddleware = (
@@ -60,3 +61,17 @@ export const tryWrapAPI = (
   }
 }
 /* eslint-enable */
+
+export const AuthGuard = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies['token']
+  if (!token) {
+    throw new Unauthorized('no token provided')
+  }
+  const decodedPayload = verifyToken(token)
+  const userId = Number(decodedPayload)
+  if (isNaN(userId)) {
+    throw new Unauthorized('decoded token payload is invalid')
+  }
+  req.userId = userId
+  next()
+}

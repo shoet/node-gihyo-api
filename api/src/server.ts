@@ -2,8 +2,13 @@ import express from 'express'
 import * as http from 'http'
 import * as dotenv from 'dotenv'
 import { morgan } from './lib/morgan'
+import cookieParser from 'cookie-parser'
 
-import { internalErrorMiddleware, tryWrapAPI } from './handlers/error'
+import {
+  internalErrorMiddleware,
+  tryWrapAPI,
+  AuthGuard,
+} from './handlers/error'
 
 import { getUserHandler } from './handlers/user'
 
@@ -23,22 +28,22 @@ const server = http.createServer(app)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(morgan)
+app.use(cookieParser())
 
 // app.use(cors())
 // app.use(helmet())
-// app.use(cookieParser())
 // app.use(session()) // express-session
 
 // Route Handler --------------------------------------------------
-app.get('/users/:id', tryWrapAPI(getUserHandler))
-app.get('/products/:id', tryWrapAPI(getProductHandler))
-app.get('/products', tryWrapAPI(getProductListHandler))
+app.get('/users/:id', AuthGuard, tryWrapAPI(getUserHandler))
+app.get('/products/:id', AuthGuard, tryWrapAPI(getProductHandler))
+app.get('/products', AuthGuard, tryWrapAPI(getProductListHandler))
 
 app.post('/auth/signup', tryWrapAPI(signUpHandler))
 app.post('/auth/signin', tryWrapAPI(signInHandler))
-app.post('/auth/signout')
-app.post('/purchase')
-app.post('/users/me')
+// app.post('/auth/signout')
+// app.post('/purchase')
+// app.post('/users/me')
 
 // Error Middleware ----------------------------------------------------
 app.use(internalErrorMiddleware)
