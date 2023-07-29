@@ -29,6 +29,7 @@ model User {
   name            String
   displayName     String
   email           String    @unique
+  password        String
   profileImageUrl String
   description     String
   Product         Product[]

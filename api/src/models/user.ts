@@ -24,5 +24,5 @@ export const getAllUsers = async (start?: number, range?: number) => {
 }
 
 export const addUser = async (user: Prisma.UserCreateInput) => {
-  await prisma.user.create({ data: user })
+  return await prisma.user.create({ data: user })
 }

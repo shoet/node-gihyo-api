@@ -13,6 +13,7 @@ import { getUserHandler } from './handlers/user'
 
 import { getEnvConfig } from './utils/config'
 import { getProductListHandler, getProductHandler } from './handlers/product'
+import { signInHandler, signUpHandler } from './handlers/auth'
 
 dotenv.config()
 
@@ -33,6 +34,8 @@ app.get('/users/:id', tryWrapAPI(getUserHandler))
 app.get('/products/:id', tryWrapAPI(getProductHandler))
 app.get('/products', tryWrapAPI(getProductListHandler))
 
+app.post('/auth/signup', tryWrapAPI(signUpHandler))
+app.post('/auth/signin', tryWrapAPI(signInHandler))
 // Error Middlewares ----------------------------------------------------
 app.use(notfoundErrorMiddleware)
 app.use(internalErrorMiddleware)
