@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from 'express'
 import { BadRequest } from '../types/error'
 import { authLogin, authSignUp, AuthSignUpProps } from '../services/auth'
 import { setCookieToken } from '../utils/http'
+import { ApiResponse } from '../types/api'
 
 export const signUpHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<ApiResponse> => {
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)
 
@@ -23,19 +24,18 @@ export const signUpHandler = async (
     profileImageUrl: body.profileImageUrl,
   }
   const user = await authSignUp(props)
-  console.log(`SignUp user ${user.id}`)
   setCookieToken(res, user)
-  return user
+  return { data: user, status: 201 }
 }
 
 export const signInHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<ApiResponse> => {
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)
   const user = await authLogin(body.email, body.password)
   setCookieToken(res, user)
-  return user
+  return { data: user, status: 200 }
 }

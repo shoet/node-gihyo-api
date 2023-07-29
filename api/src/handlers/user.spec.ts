@@ -58,6 +58,6 @@ describe('getUserHandler', () => {
 
     // found user
     const actual = getUserHandler(req as Request, res as Response, next)
-    expect(actual).resolves.toEqual(mockUser)
+    expect(actual).resolves.toEqual({ data: { ...mockUser }, status: 200 })
   })
 })

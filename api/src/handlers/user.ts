@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { getUser, getAllUsers } from '../models/user'
 import { BadRequest, NotFound } from '../types/error'
+import { ApiResponse } from '../types/api'
 
 export const getUserHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<ApiResponse> => {
   if (!req.params.id) {
     throw new BadRequest('"id" is not found in params', req)
   }
@@ -18,5 +19,5 @@ export const getUserHandler = async (
   if (user === null) {
     throw new NotFound('user is not found')
   }
-  return user
+  return { data: user, status: 200 }
 }

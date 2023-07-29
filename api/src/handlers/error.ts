@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { BadRequest, Conflict, NotFound, Unauthorized } from '../types/error'
+import { ApiResponse } from '../types/api'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 export const internalErrorMiddleware = (
@@ -43,17 +44,14 @@ export const tryWrapAPI = (
     res: Response,
     next: NextFunction,
     ...rest: any[]
-  ) => Promise<any>,
+  ) => Promise<ApiResponse>,
   ...rest: any[]
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       return handler(req, res, next, ...rest)
-        .then((data: any) => {
-          // if (process.env.NODE_ENV === 'development') {
-          //   console.log(data)
-          // }
-          res.status(200).json(data)
+        .then(({ status, data }) => {
+          return res.status(status).json(data)
         })
         .catch((err) => next(err))
     } catch (err) {

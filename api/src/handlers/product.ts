@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { getProduct, getProductRange } from '../models/product'
 import { NotFound, BadRequest } from '../types/error'
+import { ApiResponse } from '../types/api'
 
 export const getProductHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<ApiResponse> => {
   if (!req.params.id) {
     throw new BadRequest('"id" is not found in params', req)
   }
@@ -18,22 +19,22 @@ export const getProductHandler = async (
   if (product === null) {
     throw new NotFound('product is not found')
   }
-  return product
+  return { data: product, status: 200 }
 }
 
 export const getProductListHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+): Promise<ApiResponse> => {
   if (req.query.start && req.query.offset) {
     const start = Number(req.query.start)
     const offset = Number(req.query.offset)
     if (!isNaN(start) && !isNaN(offset)) {
       const products = await getProductRange(start, offset)
-      return products
+      return { data: products, status: 200 }
     }
   }
   const products = await getProductRange()
-  return products
+  return { data: products, status: 200 }
 }
