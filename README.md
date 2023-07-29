@@ -5,7 +5,6 @@
 
 # TODO
 
-- パスワード除去箇所
 - デプロイ
   - cloudrun
   - litestream

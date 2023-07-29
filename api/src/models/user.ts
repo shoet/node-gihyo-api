@@ -1,4 +1,4 @@
-import { Prisma, User } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
 export const getUser = async (options: {
@@ -16,6 +16,20 @@ export const getUser = async (options: {
     },
   })
   return user
+}
+
+export const getUserWithoutPassword = async (options: {
+  id?: number
+  name?: string
+  email?: string
+  displayName?: string
+}) => {
+  const user = await getUser(options)
+  if (user) {
+    const { password, ...userWithoutPassword } = user
+    return userWithoutPassword
+  }
+  return null
 }
 
 export const getAllUsers = async (start?: number, range?: number) => {

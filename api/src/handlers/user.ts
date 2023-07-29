@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express'
-import { getUser, getAllUsers } from '../models/user'
-import { BadRequest, NotFound } from '../types/error'
+import { getUserWithoutPassword } from '../models/user'
 import { ApiResponse } from '../types/api'
+import { BadRequest, NotFound } from '../types/error'
 
 export const getUserHandler = async (
   req: Request,
-  res: Response,
-  next: NextFunction,
+  _res: Response,
+  _next: NextFunction,
 ): Promise<ApiResponse> => {
   if (!req.params.id) {
     throw new BadRequest('"id" is not found in params', req)
@@ -15,7 +16,7 @@ export const getUserHandler = async (
   if (isNaN(userId)) {
     throw new NotFound('user is not found')
   }
-  const user = await getUser({ id: userId })
+  const user = await getUserWithoutPassword({ id: userId })
   if (user === null) {
     throw new NotFound('user is not found')
   }
