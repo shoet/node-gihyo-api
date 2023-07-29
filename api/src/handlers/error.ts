@@ -50,7 +50,7 @@ export const tryWrapAPI = (
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      handler(req, res, next, ...rest)
+      return handler(req, res, next, ...rest)
         .then((data: any) => {
           // if (process.env.NODE_ENV === 'development') {
           //   console.log(data)
