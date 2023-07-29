@@ -20,21 +20,3 @@ export const getUserHandler = async (
   }
   return user
 }
-
-export const getAllUserHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-  offsetRange: number = 5,
-) => {
-  if (req.query.offset) {
-    const start = Number(req.query.offset)
-    if (isNaN(start)) throw new BadRequest('offset is not number', req)
-
-    const range = offsetRange
-    const users = await getAllUsers(start, range)
-    return users
-  }
-  const users = await getAllUsers()
-  return users
-}
