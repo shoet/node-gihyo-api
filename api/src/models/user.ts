@@ -1,8 +1,20 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
-export const getUser = async (id: number) => {
-  const user = prisma.user.findFirst({ where: { id: id } })
+export const getUser = async (options: {
+  id?: number
+  name?: string
+  email?: string
+  displayName?: string
+}) => {
+  const user = prisma.user.findFirst({
+    where: {
+      id: options.id,
+      name: options.name,
+      email: options.email,
+      displayName: options.displayName,
+    },
+  })
   return user
 }
 

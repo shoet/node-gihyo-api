@@ -1,8 +1,12 @@
-import { Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { getProduct, getProductRange } from '../models/product'
 import { NotFound, BadRequest } from '../types/error'
 
-export const getProductHandler = async (req: Request) => {
+export const getProductHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   if (!req.params.id) {
     throw new BadRequest('"id" is not found in params', req)
   }
@@ -17,7 +21,11 @@ export const getProductHandler = async (req: Request) => {
   return product
 }
 
-export const getProductListHandler = async (req: Request) => {
+export const getProductListHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   if (req.query.start && req.query.offset) {
     const start = Number(req.query.start)
     const offset = Number(req.query.offset)

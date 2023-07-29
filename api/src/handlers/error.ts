@@ -40,12 +40,17 @@ export const internalErrorMiddleware = (
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const tryWrapAPI = (
-  handler: (req: Request, ...rest: any[]) => Promise<any>,
+  handler: (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    ...rest: any[]
+  ) => Promise<any>,
   ...rest: any[]
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      handler(req, ...rest)
+      handler(req, res, next, ...rest)
         .then((data: any) => {
           // if (process.env.NODE_ENV === 'development') {
           //   console.log(data)
