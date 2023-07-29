@@ -3,7 +3,8 @@ import { addUser, getUser } from '../models/user'
 import { Conflict, Unauthorized } from '../types/error'
 import { hashPass, compare } from '../lib/bcrypt'
 
-type AuthedUser = Omit<User, 'password'>
+export type AuthedUser = Omit<User, 'password'>
+
 export const authLogin = async (
   email: string,
   password: string,

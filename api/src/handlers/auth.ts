@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { BadRequest } from '../types/error'
 import { authLogin, authSignUp, AuthSignUpProps } from '../services/auth'
+import { setCookieToken } from '../utils/http'
 
 export const signUpHandler = async (
   req: Request,
@@ -23,6 +24,8 @@ export const signUpHandler = async (
   }
   const user = await authSignUp(props)
   console.log(`SignUp user ${user.id}`)
+  setCookieToken(res, user)
+  return user
 }
 
 export const signInHandler = async (
@@ -33,6 +36,6 @@ export const signInHandler = async (
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)
   const user = await authLogin(body.email, body.password)
-  res.cookie('cookie', 'dummy_token') // TODO: token
+  setCookieToken(res, user)
   return user
 }
