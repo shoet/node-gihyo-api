@@ -1,8 +1,9 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import * as http from 'http'
 import * as dotenv from 'dotenv'
 import { morgan } from './lib/morgan'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 import {
   internalErrorMiddleware,
@@ -10,7 +11,11 @@ import {
   AuthGuard,
 } from './handlers/error'
 
-import { getUserHandler } from './handlers/user'
+import {
+  getAllUsersHandler,
+  getUserHandler,
+  getUserMeHandler,
+} from './handlers/user'
 
 import { getEnvConfig } from './utils/config'
 import { getProductListHandler, getProductHandler } from './handlers/product'
@@ -18,25 +23,28 @@ import { signInHandler, signUpHandler } from './handlers/auth'
 
 dotenv.config()
 
-console.log(process.env.DATABASE_URL)
-
 const envConfig = getEnvConfig(process.env.NODE_ENV)
 const app = express()
 const server = http.createServer(app)
 
 // Utility Middleware ---------------------------------------------
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-app.use(morgan)
 app.use(cookieParser())
+const corsOptions = {
+  ...(process.env.CLIENT_URL ? { origin: process.env.CLIENT_URL } : {}),
+  credentials: true,
+}
+app.use(cors(corsOptions))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(morgan)
 
-// app.use(cors())
 // app.use(helmet())
 // app.use(session()) // express-session
 
 // Route Handler --------------------------------------------------
 app.get('/users/me', AuthGuard, tryWrapAPI(getUserMeHandler))
 app.get('/users/:id', AuthGuard, tryWrapAPI(getUserHandler))
+app.get('/users', AuthGuard, tryWrapAPI(getAllUsersHandler))
 app.get('/products/:id', AuthGuard, tryWrapAPI(getProductHandler))
 app.get('/products', AuthGuard, tryWrapAPI(getProductListHandler))
 

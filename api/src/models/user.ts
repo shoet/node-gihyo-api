@@ -37,6 +37,18 @@ export const getAllUsers = async (start?: number, range?: number) => {
   return users
 }
 
+export const getAllUsersWithoutPassword = async (
+  start?: number,
+  range?: number,
+) => {
+  const users = await getAllUsers(start, range)
+  const withoutPassword = users.map((u) => {
+    const { password, ...rest } = u
+    return rest
+  })
+  return withoutPassword
+}
+
 export const addUser = async (user: Prisma.UserCreateInput) => {
   return await prisma.user.create({ data: user })
 }
