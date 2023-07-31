@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express'
-import { BadRequest } from '../types/error'
 import { authLogin, authSignUp, AuthSignUpProps } from '../services/auth'
-import { setCookieToken } from '../utils/http'
 import { ApiResponse } from '../types/api'
+import { BadRequest } from '../types/error'
+import { setCookieToken } from '../utils/http'
 
 export const signUpHandler = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): Promise<ApiResponse> => {
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)
@@ -31,7 +32,7 @@ export const signUpHandler = async (
 export const signInHandler = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): Promise<ApiResponse> => {
   const body = req.body
   if (!body.email || !body.password) throw new BadRequest('Invalid params', req)

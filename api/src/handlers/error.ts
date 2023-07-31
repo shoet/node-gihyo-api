@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import { BadRequest, Conflict, NotFound, Unauthorized } from '../types/error'
 import { ApiResponse } from '../types/api'
+import { BadRequest, Conflict, NotFound, Unauthorized } from '../types/error'
 import { verifyToken } from '../utils/http'
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
@@ -12,29 +12,32 @@ export const internalErrorMiddleware = (
 ) => {
   if (err instanceof SyntaxError) {
     // JSON syntax invalid
-    console.log('[SyntaxError]', req)
-    return res.status(400).send(err.message)
+    console.log('[SyntaxError]')
+    console.log(err.message)
+    return res.status(400).json({ message: err.message })
   }
   if (err instanceof Conflict) {
-    console.log('[Conflict]', req)
+    console.log('[Conflict]')
     console.log(err.message)
-    return res.status(err.status).send(err.message)
+    return res.status(err.status).json({ message: err.message })
   }
   if (err instanceof Unauthorized) {
-    console.log('[Unauthorized]', req)
+    console.log('[Unauthorized]')
     console.log(err.message)
-    return res.status(err.status).send(err.message)
+    return res.status(err.status).json({ message: err.message })
   }
   if (err instanceof BadRequest) {
-    console.log('[BadRequest]', req)
-    return res.status(err.status).send(err.message)
+    console.log('[BadRequest]')
+    console.log(err.message)
+    return res.status(err.status).json({ message: err.message })
   }
   if (err instanceof NotFound) {
-    console.log('[NotFound]', req)
-    return res.status(err.status).send(err.message)
+    console.log('[NotFound]')
+    return res.status(err.status).json({ message: err.message })
   }
-  console.log(err)
-  return res.status(500).send('Internal Server Error')
+  console.log(req)
+  console.log(err.message)
+  return res.status(500).json({ message: 'Internal Server Error' })
 }
 /* eslint-enable */
 

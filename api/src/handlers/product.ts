@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express'
 import { getProduct, getProductRange } from '../models/product'
-import { NotFound, BadRequest } from '../types/error'
 import { ApiResponse } from '../types/api'
+import { NotFound, BadRequest } from '../types/error'
 
 export const getProductHandler = async (
   req: Request,
-  res: Response,
-  next: NextFunction,
+  _res: Response,
+  _next: NextFunction,
 ): Promise<ApiResponse> => {
   if (!req.params.id) {
     throw new BadRequest('"id" is not found in params', req)
@@ -24,8 +25,8 @@ export const getProductHandler = async (
 
 export const getProductListHandler = async (
   req: Request,
-  res: Response,
-  next: NextFunction,
+  _res: Response,
+  _next: NextFunction,
 ): Promise<ApiResponse> => {
   if (req.query.start && req.query.offset) {
     const start = Number(req.query.start)

@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
-import { getUserHandler } from './user'
 import { BadRequest, NotFound } from '../types/error'
+import { getUserHandler } from './user'
 
+/* eslint-disable import/order */
 jest.mock('../models/user.ts')
 import { getUser } from '../models/user'
+/* eslint-enable */
 
 describe('getUserHandler', () => {
   it('throws BadRequest when id is not include in params', async () => {

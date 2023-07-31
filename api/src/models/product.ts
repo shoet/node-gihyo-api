@@ -2,7 +2,10 @@ import { Prisma } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
 export const getProduct = async (id: number) => {
-  const product = prisma.product.findFirst({ where: { id: id } })
+  const product = prisma.product.findFirst({
+    where: { id: id },
+    include: { owner: { select: { id: true } } },
+  })
   return product
 }
 
@@ -10,7 +13,11 @@ export const getProductRange = async (
   start: number = 0,
   range: number = 20,
 ) => {
-  const products = await prisma.product.findMany({ skip: start, take: range })
+  const products = await prisma.product.findMany({
+    skip: start,
+    take: range,
+    include: { owner: { select: { id: true } } },
+  })
   return products
 }
 
