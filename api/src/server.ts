@@ -22,6 +22,7 @@ import {
   getProductListHandler,
   getProductHandler,
   purchaseProductHandler,
+  addProductHandler,
 } from './handlers/product'
 import { signInHandler, signUpHandler } from './handlers/auth'
 
@@ -55,6 +56,7 @@ app.get('/users/:id', AuthGuard, tryWrapAPI(getUserHandler))
 app.get('/users', AuthGuard, tryWrapAPI(getAllUsersHandler))
 app.get('/products/:id', AuthGuard, tryWrapAPI(getProductHandler))
 app.get('/products', AuthGuard, tryWrapAPI(getProductListHandler))
+app.post('/products', AuthGuard, tryWrapAPI(addProductHandler))
 app.post('/purchases', tryWrapAPI(purchaseProductHandler))
 
 // Error Middleware ----------------------------------------------------

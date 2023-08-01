@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express'
-import { getProduct, getProductRange } from '../models/product'
+import { addProduct, getProduct, getProductRange } from '../models/product'
 import { ApiResponse } from '../types/api'
 import { NotFound, BadRequest } from '../types/error'
 import { productPurchase } from '../services/purchases'
+import { request } from 'http'
 
 export const getProductHandler = async (
   req: Request,
@@ -22,6 +23,23 @@ export const getProductHandler = async (
     throw new NotFound('product is not found')
   }
   return { data: product, status: 200 }
+}
+
+export const addProductHandler = async (
+  req: Request,
+  _res: Response,
+  _next: NextFunction,
+): Promise<ApiResponse> => {
+  // TODO: validation
+  const { blurDataUrl, ...rest } = req.body
+  const newProduct = {
+    ...rest,
+    price: Number(rest.price),
+    owner: { connect: { id: rest.owner.id } },
+  }
+  const product = await addProduct(newProduct)
+
+  return { data: product, status: 201 }
 }
 
 export const getProductListHandler = async (
