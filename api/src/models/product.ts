@@ -24,3 +24,8 @@ export const getProductRange = async (
 export const addProduct = async (product: Prisma.ProductCreateInput) => {
   await prisma.product.create({ data: product })
 }
+
+export const deleteProduct = async (productId: number) => {
+  const deletedItem = await prisma.product.delete({ where: { id: productId } })
+  return deletedItem
+}

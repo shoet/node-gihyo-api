@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import { getProduct, getProductRange } from '../models/product'
 import { ApiResponse } from '../types/api'
 import { NotFound, BadRequest } from '../types/error'
+import { productPurchase } from '../services/purchases'
 
 export const getProductHandler = async (
   req: Request,
@@ -38,4 +39,25 @@ export const getProductListHandler = async (
   }
   const products = await getProductRange()
   return { data: products, status: 200 }
+}
+
+export const purchaseProductHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const body = req.body
+  if (!body.productId) {
+    throw new BadRequest('productId is not found in request', req)
+  }
+  const productId = Number(body.productId)
+  if (isNaN(productId)) {
+    throw new BadRequest('invalid productId', req)
+  }
+  const product = await getProduct(productId)
+  if (!product) {
+    throw new BadRequest('product is not found', req)
+  }
+  const purchasedItem = await productPurchase(productId)
+  return { data: purchasedItem, status: 200 }
 }

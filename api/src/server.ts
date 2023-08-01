@@ -18,7 +18,11 @@ import {
 } from './handlers/user'
 
 import { getEnvConfig } from './utils/config'
-import { getProductListHandler, getProductHandler } from './handlers/product'
+import {
+  getProductListHandler,
+  getProductHandler,
+  purchaseProductHandler,
+} from './handlers/product'
 import { signInHandler, signUpHandler } from './handlers/auth'
 
 dotenv.config()
@@ -42,17 +46,16 @@ app.use(morgan)
 // app.use(session()) // express-session
 
 // Route Handler --------------------------------------------------
+app.post('/auth/signup', tryWrapAPI(signUpHandler))
+app.post('/auth/signin', tryWrapAPI(signInHandler))
+// app.post('/auth/signout')
+
 app.get('/users/me', AuthGuard, tryWrapAPI(getUserMeHandler))
 app.get('/users/:id', AuthGuard, tryWrapAPI(getUserHandler))
 app.get('/users', AuthGuard, tryWrapAPI(getAllUsersHandler))
 app.get('/products/:id', AuthGuard, tryWrapAPI(getProductHandler))
 app.get('/products', AuthGuard, tryWrapAPI(getProductListHandler))
-
-app.post('/auth/signup', tryWrapAPI(signUpHandler))
-app.post('/auth/signin', tryWrapAPI(signInHandler))
-// app.post('/auth/signout')
-// app.post('/purchase')
-// app.post('/users/me')
+app.post('/purchases', tryWrapAPI(purchaseProductHandler))
 
 // Error Middleware ----------------------------------------------------
 app.use(internalErrorMiddleware)
